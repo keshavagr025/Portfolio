@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes typing2 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-typing {
+  width: 0;
+  animation: typing 2s steps(20) forwards;
+}
+
+.animate-typing2 {
+  width: 0;
+  animation: typing2 5s steps(40) forwards;
+}
+
+.typing-effect {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid white;
+  animation:
+    typewriter 4s steps(70, end),
+    blinkCaret 0.75s step-end infinite;
+}

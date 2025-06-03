@@ -1,0 +1,14 @@
+/* In your global CSS or module */
+.caveat {
+  font-family: "Caveat", cursive;
+  font-weight: 600;
+}
+.typing-effect {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid white;
+  animation:
+    typewriter 4s steps(70, end),
+    blinkCaret 0.75s step-end infinite;
+}
