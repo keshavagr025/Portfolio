@@ -4,7 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
- theme: {
+ theme: { 
   extend: {
     animation: {
       "spin-slow-y": "spinY 10s linear infinite",
