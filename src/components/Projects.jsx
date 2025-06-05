@@ -106,7 +106,7 @@ function ProjectCard({ project }) {
 export default function Projects() {
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-8 flex flex-col items-center">
-      <h2 className="text-5xl mb-10 font-mono">Projects</h2>
+      <h2 className="text-5xl mb-10 font-mono font-bold-100 text-blue-400">Projects</h2>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {projects.map((project, idx) => (
           <ProjectCard key={idx} project={project} />

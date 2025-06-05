@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import GLOBE from 'vanta/dist/vanta.globe.min';
 import { motion } from 'framer-motion';
-import '../index.css'
-import '../App.css'
+import '../index.css';
+import '../App.css';
 
 export default function About() {
   const vantaRef = useRef(null);
@@ -58,8 +58,7 @@ export default function About() {
           <h2 className="text-4xl md:text-5xl mb-4 font-mono text-cyan-400 whitespace-nowrap overflow-hidden border-r-2 border-white animate-typing">
             Hi, I'm Keshav
           </h2>
-          <p className="text-lg  text-blue-100 mb-6 font-mono
-  md:animate-typing2 md:whitespace-nowrap md:overflow-hidden md:border-r-2 md:border-white">
+          <p className="text-lg text-blue-100 mb-6 font-mono md:animate-typing2 md:whitespace-nowrap md:overflow-hidden md:border-r-2 md:border-white">
             A Full Stack Web Developer who loves solving real-world problems.
           </p>
           <button
@@ -76,11 +75,13 @@ export default function About() {
         ref={aboutDetailsRef}
         className="w-full px-6 py-16 bg-cyan-900 text-white flex flex-col items-center"
       >
+        {/* Profile Image */}
         <motion.div
           className="w-40 h-40 rounded-full overflow-hidden shadow-xl cursor-pointer mb-6"
           style={{
             perspective: 1000,
-            boxShadow: '0 10px 20px rgba(145, 94, 255, 0.5), 0 0 20px rgba(145, 94, 255, 0.4)',
+            boxShadow:
+              '0 10px 20px rgba(145, 94, 255, 0.5), 0 0 20px rgba(145, 94, 255, 0.4)',
           }}
           initial={{ opacity: 0, rotateY: -10 }}
           whileInView={{ opacity: 1, rotateY: 0 }}
@@ -94,25 +95,44 @@ export default function About() {
           />
         </motion.div>
 
+        {/* Header */}
         <motion.h3
           className="text-3xl font-bold-200 mb-4 text-center font-mono"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.2 }}
         >
-          About Me
+          let’s
+          Introduce 
+          myself
         </motion.h3>
+
+        {/* College and School Info */}
+
+             {/* College Logo */}
+        <motion.img
+          src="image/logo1.png"
+          alt="JUET Logo"
+         className="mt-6 w-14 h-auto rounded-lg shadow-lg mx-auto"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        />
+        <br></br>
         <motion.p
-          className="max-w-3xl text-center text-lg leading-relaxed font-mono"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          className="max-w-3xl text-center text-lg font-mono text-blue-100 leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
-          I’m <strong>Keshav</strong>, a passionate <strong>MERN</strong> stack developer who loves building fast,
-          accessible, and scalable web apps. From frontend animations to backend APIs, I enjoy
-          crafting smooth user experiences that blend design and logic. I'm also exploring AI
-          integrations to create smarter interfaces and intelligent tools. Outside of coding, you’ll
-          find me sketching UI ideas or exploring new tech trends!
+          I'm currently pursuing my B.Tech at{' '}
+          <span className="text-cyan-300 font-semibold">
+            Jaypee University of Engineering and Technology (JUET), Guna
+          </span>
+          , I am interested in algorithms and Data Structures involved in solving popular problems in computer science.
+   
+       <br></br>    <br></br>
+         I’m Keshav, a passionate MERN stack developer who loves building fast, accessible, and scalable web apps. From frontend animations to backend APIs, I enjoy crafting smooth user experiences that blend design and logic. I'm also exploring AI integrations to create smarter interfaces and intelligent tools. Outside of coding, you’ll find me sketching UI ideas or exploring new tech trends!
         </motion.p>
       </section>
     </>
