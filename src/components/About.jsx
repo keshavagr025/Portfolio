@@ -132,7 +132,7 @@ export default function About() {
           , I am interested in algorithms and Data Structures involved in solving popular problems in computer science.
    
        <br></br>    <br></br>
-         I’m Keshav, a passionate MERN stack developer who loves building fast, accessible, and scalable web apps. From frontend animations to backend APIs, I enjoy crafting smooth user experiences that blend design and logic. I'm also exploring AI integrations to create smarter interfaces and intelligent tools. Outside of coding, you’ll find me sketching UI ideas or exploring new tech trends!
+         I’m , a passionate MERN stack developer who loves building fast, accessible, and scalable web apps. From frontend animations to backend APIs, I enjoy crafting smooth user experiences that blend design and logic. I'm also exploring AI integrations to create smarter interfaces and intelligent tools. Outside of coding, you’ll find me sketching UI ideas or exploring new tech trends!
         </motion.p>
       </section>
     </>
