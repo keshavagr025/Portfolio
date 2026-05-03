@@ -1,117 +1,77 @@
-"use client";
-
-import React, { useState } from "react";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-import { FiGithub, FiExternalLink } from "react-icons/fi";
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const projects = [
   {
-    title: "Real Time Zerodha Trading",
-    description: "A real-time trading application using Alpha Vantage  API.",
-    tech: ["React", "Tailwind", "Zerodha API"],
-    image: "/image/image.png", // add your project images in public/projects/
-    github: "https://github.com/yourusername/portfolio",
-    live: "https://yourportfolio.com",
+    title: 'IntelliHire AI (ReadyBoss)',
+    tech: ['MERN', 'OpenAI', 'Claude'],
+    description: 'Constructed a candidate screening platform connecting 13+ APIs for ATS scoring, skill-gap detection, and career roadmap generation.',
+    achievements: 'Awarded Runner-up at Hacksagon 2025 among 600+ teams. Automated PDF parsing cutting screening time by ~40%.',
+    link: '#'
   },
   {
-    title: "Talkie wakie",
-    description: "Real-time chat app with Socket.IO and Node.js backend.",
-    tech: ["Node.js", "Socket.IO", "React"],
-    image: "/image/Talkie.png",
-    github: "https://github.com/keshavagr025/Chat-App",
-    live: "https://chat-app-n9ei.onrender.com/",
+    title: 'CortexCraft AI',
+    tech: ['MERN', 'FastAPI', 'Groq (Llama 3.3)', 'Socket.IO'],
+    description: 'Architected an AI mock interview platform using Groq, raising candidate shortlist rates by 25%. Enabled live collaboration for 50+ concurrent users with sub-100 ms message delivery.',
+    achievements: 'Embedded 5 AI modules with Recharts dashboards for granular progress analytics.',
+    link: '#'
   },
   {
-    title: "Wellora Health-Care Support",
-    description: "A health-care support system for patients and doctors.",
-    tech: ["MongoDB", "Express", "React", "Node.js"],
-    image: "/image/wellora.png",
-    github: "https://github.com/keshavagr025/HealthifNow",
-    live: "https://healthifnow-frontend1.onrender.com/",
-  },
+    title: 'TradeX AI',
+    tech: ['React', 'Chart.js', 'JWT', 'Node.js'],
+    description: 'Launched a stock trading simulation platform featuring Chart.js candlestick visualizations and live portfolio tracking for 10+ simulated instruments.',
+    achievements: 'Implemented secure JWT-based authentication.',
+    link: '#'
+  }
 ];
-
-function ProjectCard({ project }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <CardContainer
-      className="cursor-pointer w-full max-w-md mx-auto"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <CardBody
-        className={`bg-gradient-to-br from-purple-900 to-indigo-900 rounded-xl p-4 border border-transparent transition-shadow duration-300 flex flex-col ${
-          hovered ? "shadow-2xl shadow-indigo-500/50" : "shadow-md shadow-black/20"
-        }`}
-      >
-        {/* Project Image */}
-        <CardItem translateZ={hovered ? 40 : 10} className="overflow-hidden rounded-lg mb-4">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-48 object-cover transform transition-transform duration-500 hover:scale-105"
-            loading="lazy"
-          />
-        </CardItem>
-
-        {/* Title */}
-        <CardItem translateZ={hovered ? 40 : 10} className="text-2xl font-semibold text-white mb-2">
-          {project.title}
-        </CardItem>
-
-        {/* Description */}
-        <CardItem translateZ={hovered ? 30 : 5} className="text-indigo-200 mb-4" as="p">
-          {project.description}
-        </CardItem>
-
-        {/* Tech stack */}
-        <CardItem translateZ={hovered ? 20 : 5} className="flex flex-wrap gap-2 mb-4">
-          {project.tech.map((tech) => (
-            <span
-              key={tech}
-              className="bg-indigo-700 text-indigo-200 px-2 py-1 rounded text-sm"
-            >
-              {tech}
-            </span>
-          ))}
-        </CardItem>
-
-        {/* Links */}
-        <CardItem translateZ={hovered ? 20 : 5} className="flex gap-6 text-white text-xl">
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub Repository"
-            className="hover:text-indigo-400 transition-colors"
-          >
-            <FiGithub />
-          </a>
-          <a
-            href={project.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Live Demo"
-            className="hover:text-indigo-400 transition-colors"
-          >
-            <FiExternalLink />
-          </a>
-        </CardItem>
-      </CardBody>
-    </CardContainer>
-  );
-}
 
 export default function Projects() {
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-8 flex flex-col items-center">
-      <h2 className="text-5xl mb-10 font-mono font-bold-100 text-blue-400">Projects</h2>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+    <div className="w-full max-w-6xl mx-auto flex flex-col justify-center h-full">
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        className="text-4xl md:text-6xl font-black mb-16 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-center"
+      >
+        Featured Projects
+      </motion.h2>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {projects.map((project, idx) => (
-          <ProjectCard key={idx} project={project} />
+          <motion.div
+            key={project.title}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ delay: idx * 0.2, duration: 0.8 }}
+            className="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 hover:border-cyan-500/50 transition-all duration-500 overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[50px] group-hover:bg-cyan-500/30 transition-all duration-500" />
+
+            <h3 className="text-2xl font-bold text-white mb-4 relative z-10">{project.title}</h3>
+
+            <div className="flex flex-wrap gap-2 mb-6 relative z-10">
+              {project.tech.map(t => (
+                <span key={t} className="px-3 py-1 bg-black/50 border border-white/10 rounded-full text-xs font-mono text-cyan-300">
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <p className="text-gray-300 mb-4 text-sm leading-relaxed relative z-10">
+              {project.description}
+            </p>
+            <p className="text-gray-400 text-sm font-mono relative z-10">
+              <span className="text-purple-400">► </span>{project.achievements}
+            </p>
+
+            <a href={project.link} className="inline-block mt-8 text-cyan-400 hover:text-white font-mono font-bold tracking-widest uppercase text-sm transition-colors relative z-10">
+              View Project ↗
+            </a>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

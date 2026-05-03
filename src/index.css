@@ -6,6 +6,7 @@
   from {
     width: 0;
   }
+
   to {
     width: 100%;
   }
@@ -15,6 +16,7 @@
   from {
     width: 0;
   }
+
   to {
     width: 100%;
   }
@@ -38,4 +40,26 @@
   animation:
     typewriter 4s steps(70, end),
     blinkCaret 0.75s step-end infinite;
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.intro-bg {
+  background: radial-gradient(circle at top left, #312e81, transparent 50%),
+    radial-gradient(circle at bottom right, #22d3ee, transparent 50%),
+    linear-gradient(120deg, #020617, #0f172a, #1e293b);
+  background-size: 200% 200%;
+  animation: gradient-move 6s ease-in-out infinite;
 }

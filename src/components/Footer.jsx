@@ -31,9 +31,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-r from-indigo-900 to-cyan-100 text-black p-6 flex flex-col md:flex-row justify-between items-center">
-      <p className="mb-4 md:mb-0 font-semibold tracking-wider">Keshav Agrawal</p>
-      <div className="flex gap-6 text-2xl">
+    <footer className="bg-gradient-to-r from-indigo-900 to-cyan-100 text-black p-6 flex flex-col items-center gap-4">
+      <p className="font-semibold tracking-wider text-center">Keshav Agrawal</p>
+      <div className="flex gap-6 text-2xl justify-center">
         {icons.map(({ Icon, href, label }, index) => (
           <motion.a
             key={label}
