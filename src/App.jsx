@@ -17,18 +17,56 @@ function Navbar() {
   const [active, setActive] = useState('about');
 
   useEffect(() => {
-    const sections = NAV_LINKS.map(l => document.getElementById(l.id)).filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { threshold: 0.5 }
-    );
-    sections.forEach(s => observer.observe(s));
-    return () => observer.disconnect();
+    let observer;
+    let timeoutId;
+
+    const setupObserver = () => {
+      const sections = NAV_LINKS.map(l => document.getElementById(l.id)).filter(Boolean);
+      
+      // If sections are not fully loaded in DOM, wait and try again
+      if (sections.length < NAV_LINKS.length) {
+        timeoutId = setTimeout(setupObserver, 100);
+        return;
+      }
+
+      // Find Drei scroll container - a parent of our HTML sections with overflow auto/scroll
+      const scrollContainer = sections[0].closest('div[style*="overflow"]') || 
+                              sections[0].parentElement?.parentElement || 
+                              null;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setActive(entry.target.id);
+            }
+          });
+        },
+        {
+          root: scrollContainer,
+          threshold: 0.25, // visible when 25% enters viewport area
+          rootMargin: '-20% 0px -20% 0px' // offset so it triggers when center element is focused
+        }
+      );
+
+      sections.forEach(s => observer.observe(s));
+    };
+
+    setupObserver();
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-3">
@@ -41,6 +79,7 @@ function Navbar() {
           <a
             key={id}
             href={`#${id}`}
+            onClick={(e) => handleClick(e, id)}
             className="relative flex items-center group"
           >
             {/* Tooltip label — slides in from right */}
@@ -73,6 +112,26 @@ function Navbar() {
 }
 
 function App() {
+  const [pages, setPages] = useState(9.5);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      // Stacking of elements on mobile requires significantly more scroll height
+      if (width < 768) {
+        setPages(14.5);
+      } else if (width < 1024) {
+        setPages(12);
+      } else {
+        setPages(9.5);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="w-screen h-screen bg-[#00040a] overflow-hidden text-white font-sans">
       {/* Navbar rendered outside Canvas so it's always visible */}
@@ -85,7 +144,7 @@ function App() {
         <directionalLight position={[10, 10, 10]} intensity={1} />
 
         <Suspense fallback={null}>
-          <ScrollControls pages={9} damping={0.2}>
+          <ScrollControls pages={pages} damping={0.2}>
             <Scene />
           </ScrollControls>
         </Suspense>

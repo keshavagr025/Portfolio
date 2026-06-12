@@ -55,7 +55,7 @@ const achievements = [
 
 export default function Achievements() {
   return (
-    <div id="achievements" className="w-full max-w-6xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

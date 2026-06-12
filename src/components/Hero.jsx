@@ -36,6 +36,14 @@ export default function Hero() {
     return () => clearTimeout(timeout);
   }, [displayed, deleting, roleIndex]);
 
+  const handleScroll = (e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -88,12 +96,14 @@ export default function Hero() {
       <div className="flex flex-col gap-3 w-full mt-1">
         <a
           href="#contact"
+          onClick={(e) => handleScroll(e, 'contact')}
           className="w-full py-3.5 rounded-2xl bg-white text-black font-semibold text-sm hover:bg-gray-100 active:scale-95 transition-all text-center"
         >
           Get In Touch
         </a>
         <a
           href="#projects"
+          onClick={(e) => handleScroll(e, 'projects')}
           className="w-full py-3.5 rounded-2xl border border-white/20 text-white font-semibold text-sm hover:bg-white/10 active:scale-95 transition-all text-center"
         >
           View Work
