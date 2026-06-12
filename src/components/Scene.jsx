@@ -95,9 +95,9 @@ function About() {
         </p>
 
         <p className="text-gray-400 text-sm leading-relaxed">
-          Currently a <span className="text-white font-semibold">3rd year B.Tech student</span> at JUET, Guna integrating LLMs like{' '}
+          Currently a <span className="text-white font-semibold">4th year B.Tech student</span> at JUET, Guna integrating LLMs like{' '}
           <span className="text-white font-semibold">Groq, OpenAI and Claude</span> into MERN apps, building real-time systems,
-          and contributing to open source. I also solve <span className="text-white font-semibold">400+</span> problems on LeetCode
+          and contributing to open source. I also solve <span className="text-white font-semibold">500+</span> problems on LeetCode
           because strong fundamentals power better AI systems.
         </p>
 
