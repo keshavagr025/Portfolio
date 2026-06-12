@@ -102,7 +102,7 @@ function About() {
         </p>
 
         <div className="flex flex-wrap gap-2 pt-1">
-          {['MERN Stack', 'Open Source', 'DSA · 400+ LeetCode'].map((tag) => (
+          {['MERN Stack', 'Open Source', 'DSA · 500+ LeetCode'].map((tag) => (
             <span key={tag} className="px-3 py-1 text-xs font-mono rounded-full bg-white/5 border border-white/10 text-gray-300">
               {tag}
             </span>
