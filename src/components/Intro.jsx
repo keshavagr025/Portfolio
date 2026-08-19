@@ -9,22 +9,23 @@ function CyberHoloMan({ isBoosted }) {
   const headRef = useRef();
   const ring1Ref = useRef();
   const ring2Ref = useRef();
+  const ring3Ref = useRef();
   const cubesGroupRef = useRef();
 
-  // Mouse tracking targets
+  // Smooth mouse tracking targets
   const targetRotX = useRef(0);
   const targetRotY = useRef(0);
 
-  // Generate 800 glowing particle points for the holographic body aura
+  // Generate 900 glowing particle points for the holographic aura
   const [particlePositions] = useMemo(() => {
-    const count = 800;
+    const count = 900;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const u = Math.random();
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
-      const r = 0.8 + Math.random() * 0.9;
+      const r = 0.9 + Math.random() * 1.1;
       pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) + 0.6;
       pos[i * 3 + 2] = r * Math.cos(phi);
@@ -37,77 +38,84 @@ function CyberHoloMan({ isBoosted }) {
     const mouse = state.mouse;
 
     // Smooth lerp mouse tracking
-    targetRotX.current = THREE.MathUtils.lerp(targetRotX.current, mouse.y * 0.4, 0.05);
-    targetRotY.current = THREE.MathUtils.lerp(targetRotY.current, mouse.x * 0.6, 0.05);
+    targetRotX.current = THREE.MathUtils.lerp(targetRotX.current, mouse.y * 0.35, 0.05);
+    targetRotY.current = THREE.MathUtils.lerp(targetRotY.current, mouse.x * 0.55, 0.05);
 
     if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(t * 2) * 0.15;
+      groupRef.current.position.y = -0.55 + Math.sin(t * 2) * 0.12;
       groupRef.current.rotation.y = targetRotY.current;
-      groupRef.current.rotation.x = -targetRotX.current * 0.5;
+      groupRef.current.rotation.x = -targetRotX.current * 0.4;
     }
 
     if (headRef.current) {
-      headRef.current.rotation.y = mouse.x * 0.5;
-      headRef.current.rotation.x = -mouse.y * 0.3;
+      headRef.current.rotation.y = mouse.x * 0.4;
+      headRef.current.rotation.x = -mouse.y * 0.25;
     }
 
-    if (ring1Ref.current && ring2Ref.current) {
-      ring1Ref.current.rotation.z = t * 1.2;
-      ring1Ref.current.rotation.x = Math.sin(t * 0.5) * 0.5;
-      ring2Ref.current.rotation.z = -t * 1.5;
-      ring2Ref.current.rotation.y = Math.cos(t * 0.5) * 0.5;
+    if (ring1Ref.current && ring2Ref.current && ring3Ref.current) {
+      ring1Ref.current.rotation.z = t * 1.4;
+      ring1Ref.current.rotation.x = Math.sin(t * 0.6) * 0.4;
+      ring2Ref.current.rotation.z = -t * 1.6;
+      ring2Ref.current.rotation.y = Math.cos(t * 0.6) * 0.4;
+      ring3Ref.current.rotation.x = t * 0.8;
+      ring3Ref.current.rotation.z = t * 0.5;
     }
 
     if (cubesGroupRef.current) {
-      cubesGroupRef.current.rotation.y = t * 0.4;
+      cubesGroupRef.current.rotation.y = t * 0.5;
     }
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.6, 0]} scale={isBoosted ? [1.3, 1.3, 1.3] : [1.15, 1.15, 1.15]}>
+    <group ref={groupRef} position={[0, -0.55, 0]} scale={isBoosted ? [1.25, 1.25, 1.25] : [1.1, 1.1, 1.1]}>
 
       {/* PARTICLES AURA AROUND CHARACTER */}
       <points>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" count={800} array={particlePositions} itemSize={3} />
+          <bufferAttribute attach="attributes-position" count={900} array={particlePositions} itemSize={3} />
         </bufferGeometry>
-        <pointsMaterial size={0.04} color={isBoosted ? "#f43f5e" : "#00f0ff"} transparent opacity={0.7} sizeAttenuation />
+        <pointsMaterial size={0.035} color={isBoosted ? "#f43f5e" : "#00f0ff"} transparent opacity={0.8} sizeAttenuation />
       </points>
 
-      {/* HEAD */}
+      {/* HEAD & NEON VISOR */}
       <group ref={headRef} position={[0, 1.75, 0]}>
+        {/* Main Helmet */}
         <mesh position={[0, 0, 0]}>
           <sphereGeometry args={[0.32, 32, 32]} />
-          <meshStandardMaterial color="#0b1329" roughness={0.1} metalness={0.9} />
+          <meshStandardMaterial color="#070d1e" roughness={0.1} metalness={0.95} />
         </mesh>
 
+        {/* Outer Cyber Grid */}
         <mesh position={[0, 0, 0]}>
           <sphereGeometry args={[0.33, 16, 16]} />
-          <meshBasicMaterial color="#00f0ff" wireframe transparent opacity={0.3} />
+          <meshBasicMaterial color="#00f0ff" wireframe transparent opacity={0.35} />
         </mesh>
 
+        {/* Visor Screen */}
         <mesh position={[0, 0.06, 0.27]}>
           <boxGeometry args={[0.44, 0.13, 0.16]} />
           <meshStandardMaterial
             color={isBoosted ? "#f43f5e" : "#00f0ff"}
             emissive={isBoosted ? "#f43f5e" : "#00f0ff"}
-            emissiveIntensity={isBoosted ? 6 : 4}
+            emissiveIntensity={isBoosted ? 7 : 5}
             roughness={0.0}
           />
         </mesh>
 
-        <mesh position={[0, 0.06, 0.6]} rotation={[Math.PI / 2, 0, 0]}>
-          <coneGeometry args={[0.3, 0.6, 16]} />
-          <meshBasicMaterial color="#00f0ff" transparent opacity={0.15} />
+        {/* Holographic Light Beam Cone */}
+        <mesh position={[0, 0.06, 0.65]} rotation={[Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.35, 0.7, 16]} />
+          <meshBasicMaterial color="#00f0ff" transparent opacity={0.18} />
         </mesh>
 
+        {/* Cyber Ear Pods */}
         <mesh position={[-0.35, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.08, 0.08, 0.08, 16]} />
-          <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={2} />
+          <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={3} />
         </mesh>
         <mesh position={[0.35, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.08, 0.08, 0.08, 16]} />
-          <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={2} />
+          <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={3} />
         </mesh>
       </group>
 
@@ -121,30 +129,33 @@ function CyberHoloMan({ isBoosted }) {
       <group position={[0, 0.8, 0]}>
         <mesh position={[0, 0, 0]}>
           <cylinderGeometry args={[0.42, 0.3, 0.9, 16]} />
-          <meshStandardMaterial color="#030712" roughness={0.2} metalness={0.85} />
+          <meshStandardMaterial color="#030712" roughness={0.15} metalness={0.9} />
         </mesh>
 
+        {/* Chest Wireframe Armor */}
         <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.43, 0.31, 0.91, 12]} />
-          <meshBasicMaterial color="#38bdf8" wireframe transparent opacity={0.25} />
+          <cylinderGeometry args={[0.43, 0.31, 0.91, 14]} />
+          <meshBasicMaterial color="#38bdf8" wireframe transparent opacity={0.3} />
         </mesh>
 
+        {/* Glowing Arc Core */}
         <mesh position={[0, 0.18, 0.35]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.13, 0.13, 0.06, 32]} />
+          <cylinderGeometry args={[0.14, 0.14, 0.06, 32]} />
           <meshStandardMaterial
             color={isBoosted ? "#ec4899" : "#38bdf8"}
             emissive={isBoosted ? "#ec4899" : "#00f0ff"}
-            emissiveIntensity={isBoosted ? 7 : 5}
+            emissiveIntensity={isBoosted ? 8 : 6}
           />
         </mesh>
 
+        {/* Shoulder Pauldrons */}
         <mesh position={[-0.48, 0.35, 0]}>
           <sphereGeometry args={[0.18, 16, 16]} />
-          <meshStandardMaterial color="#a855f7" emissive="#9333ea" emissiveIntensity={2} />
+          <meshStandardMaterial color="#a855f7" emissive="#9333ea" emissiveIntensity={3} />
         </mesh>
         <mesh position={[0.48, 0.35, 0]}>
           <sphereGeometry args={[0.18, 16, 16]} />
-          <meshStandardMaterial color="#a855f7" emissive="#9333ea" emissiveIntensity={2} />
+          <meshStandardMaterial color="#a855f7" emissive="#9333ea" emissiveIntensity={3} />
         </mesh>
       </group>
 
@@ -152,67 +163,74 @@ function CyberHoloMan({ isBoosted }) {
       <group position={[-0.5, 1.1, 0]}>
         <mesh position={[-0.15, -0.3, 0]}>
           <cylinderGeometry args={[0.08, 0.07, 0.5, 16]} />
-          <meshStandardMaterial color="#0f172a" metalness={0.8} />
+          <meshStandardMaterial color="#0f172a" metalness={0.85} />
         </mesh>
         <mesh position={[-0.12, -0.5, 0.25]} rotation={[Math.PI / 3, 0, 0]}>
           <cylinderGeometry args={[0.07, 0.06, 0.45, 16]} />
-          <meshStandardMaterial color="#1e293b" metalness={0.8} />
+          <meshStandardMaterial color="#1e293b" metalness={0.85} />
         </mesh>
       </group>
 
       <group position={[0.5, 1.1, 0]}>
         <mesh position={[0.15, -0.3, 0]}>
           <cylinderGeometry args={[0.08, 0.07, 0.5, 16]} />
-          <meshStandardMaterial color="#0f172a" metalness={0.8} />
+          <meshStandardMaterial color="#0f172a" metalness={0.85} />
         </mesh>
         <mesh position={[0.12, -0.5, 0.25]} rotation={[Math.PI / 3, 0, 0]}>
           <cylinderGeometry args={[0.07, 0.06, 0.45, 16]} />
-          <meshStandardMaterial color="#1e293b" metalness={0.8} />
+          <meshStandardMaterial color="#1e293b" metalness={0.85} />
         </mesh>
       </group>
 
-      {/* FLOATING HOLOGRAPHIC LAPTOP */}
+      {/* FLOATING HOLOGRAPHIC CODE TABLET */}
       <group position={[0, 0.45, 0.55]} rotation={[-0.2, 0, 0]}>
         <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[0.62, 0.02, 0.42]} />
+          <boxGeometry args={[0.68, 0.02, 0.45]} />
           <meshStandardMaterial color="#020617" metalness={0.95} />
         </mesh>
-        <mesh position={[0, 0.24, -0.19]} rotation={[-0.25, 0, 0]}>
-          <boxGeometry args={[0.6, 0.42, 0.01]} />
+        <mesh position={[0, 0.26, -0.2]} rotation={[-0.25, 0, 0]}>
+          <boxGeometry args={[0.64, 0.45, 0.01]} />
           <meshStandardMaterial
             color="#00f0ff"
             emissive="#00f0ff"
-            emissiveIntensity={isBoosted ? 5 : 3}
+            emissiveIntensity={isBoosted ? 6 : 4}
             transparent
-            opacity={0.9}
+            opacity={0.95}
           />
         </mesh>
       </group>
 
-      {/* LEGS */}
+      {/* LEGS & CYBER BOOTS */}
       <group position={[0, -0.2, 0]}>
         <mesh position={[-0.2, -0.4, 0]}>
           <cylinderGeometry args={[0.11, 0.09, 0.7, 16]} />
-          <meshStandardMaterial color="#0b1329" metalness={0.8} />
+          <meshStandardMaterial color="#0b1329" metalness={0.85} />
         </mesh>
         <mesh position={[0.2, -0.4, 0]}>
           <cylinderGeometry args={[0.11, 0.09, 0.7, 16]} />
-          <meshStandardMaterial color="#0b1329" metalness={0.8} />
+          <meshStandardMaterial color="#0b1329" metalness={0.85} />
         </mesh>
       </group>
 
       {/* 3D SPINNING HOLOGRAPHIC MATRIX RINGS */}
       <group ref={ring1Ref} position={[0, 0.8, 0]}>
         <mesh>
-          <torusGeometry args={[1.35, 0.015, 16, 100]} />
+          <torusGeometry args={[1.4, 0.015, 16, 100]} />
           <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={4} />
         </mesh>
       </group>
 
       <group ref={ring2Ref} position={[0, 0.8, 0]}>
         <mesh>
-          <torusGeometry args={[1.55, 0.01, 16, 100]} />
-          <meshStandardMaterial color="#00f0ff" emissive="#00f0ff" emissiveIntensity={3} />
+          <torusGeometry args={[1.65, 0.012, 16, 100]} />
+          <meshStandardMaterial color="#00f0ff" emissive="#00f0ff" emissiveIntensity={4} />
+        </mesh>
+      </group>
+
+      <group ref={ring3Ref} position={[0, 0.8, 0]}>
+        <mesh>
+          <torusGeometry args={[1.9, 0.008, 16, 100]} />
+          <meshStandardMaterial color="#ec4899" emissive="#ec4899" emissiveIntensity={3} />
         </mesh>
       </group>
 
@@ -220,15 +238,21 @@ function CyberHoloMan({ isBoosted }) {
       <group ref={cubesGroupRef} position={[0, 0.8, 0]}>
         {[...Array(6)].map((_, i) => {
           const angle = (i / 6) * Math.PI * 2;
-          const radius = 1.6;
+          const radius = 1.75;
           return (
-            <mesh key={i} position={[Math.cos(angle) * radius, Math.sin(i) * 0.3, Math.sin(angle) * radius]}>
-              <boxGeometry args={[0.08, 0.08, 0.08]} />
-              <meshStandardMaterial color="#00f0ff" emissive="#00f0ff" emissiveIntensity={4} />
+            <mesh key={i} position={[Math.cos(angle) * radius, Math.sin(i) * 0.35, Math.sin(angle) * radius]}>
+              <boxGeometry args={[0.09, 0.09, 0.09]} />
+              <meshStandardMaterial color="#00f0ff" emissive="#00f0ff" emissiveIntensity={5} />
             </mesh>
           );
         })}
       </group>
+
+      {/* BASE HOLOGRAPHIC PEDESTAL RING */}
+      <mesh position={[0, -0.85, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.8, 1.4, 32]} />
+        <meshBasicMaterial color={isBoosted ? "#f43f5e" : "#00f0ff"} transparent opacity={0.25} side={THREE.DoubleSide} />
+      </mesh>
     </group>
   );
 }
@@ -265,7 +289,7 @@ export default function Intro({ onLoadingComplete }) {
 
   const handleBoost = () => {
     setIsBoosted(true);
-    setProgress((prev) => Math.min(prev + 22, 100));
+    setProgress((prev) => Math.min(prev + 24, 100));
     setTimeout(() => setIsBoosted(false), 500);
   };
 
@@ -281,9 +305,9 @@ export default function Intro({ onLoadingComplete }) {
         >
           {/* Ambient Background Glows & Dynamic Nitro Halos */}
           <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px] pointer-events-none transition-all duration-300 ${
-            isBoosted ? 'w-[900px] h-[600px] bg-rose-500/30' : 'w-[750px] h-[500px] bg-cyan-500/15'
+            isBoosted ? 'w-[950px] h-[650px] bg-rose-500/30' : 'w-[800px] h-[550px] bg-cyan-500/18'
           }`} />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-600/15 rounded-full blur-[120px] pointer-events-none" />
 
           {/* Animated Background Particles */}
@@ -327,40 +351,43 @@ export default function Intro({ onLoadingComplete }) {
             </div>
           </div>
 
-          {/* CENTER: 3D CYBER CHARACTER IN THE MIDDLE OF NAME */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 my-auto max-w-5xl mx-auto w-full">
+          {/* CENTER: EPIC 3D HOLOGRAPHIC HERO EXPERIENCE */}
+          <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 my-auto max-w-6xl mx-auto w-full">
             
             {/* Top Status Tag */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-[10px] font-mono text-cyan-300 tracking-[0.25em] uppercase mb-4 shadow-[0_0_20px_rgba(6,182,212,0.35)]"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-[10px] sm:text-xs font-mono text-cyan-300 tracking-[0.25em] uppercase mb-2 shadow-[0_0_20px_rgba(6,182,212,0.35)]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              NEURAL INTERFACE: ONLINE
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              NEURAL 3D AVATAR: ONLINE
             </motion.div>
 
-            {/* PROMINENT NAME WITH 3D CYBER MAN IN THE MIDDLE */}
+            {/* HIGH-PRECISION 3D HOLOGRAM CANVAS (UNCROPPED, HIGH RES) */}
+            <div className="w-full h-64 sm:h-80 md:h-96 relative flex items-center justify-center">
+              <Canvas
+                gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+                camera={{ position: [0, 0.7, 4.6], fov: 42 }}
+                className="w-full h-full"
+              >
+                <ambientLight intensity={1.2} />
+                <directionalLight position={[6, 12, 6]} intensity={2.4} color="#00f0ff" />
+                <pointLight position={[-6, 6, -6]} intensity={1.8} color="#a855f7" />
+                <pointLight position={[0, 0, 5]} intensity={isBoosted ? 3.5 : 1.5} color={isBoosted ? "#f43f5e" : "#38bdf8"} />
+                <CyberHoloMan isBoosted={isBoosted} />
+              </Canvas>
+            </div>
+
+            {/* STUNNING HERO NAME DISPLAY */}
             <motion.h1
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white drop-shadow-[0_0_45px_rgba(6,182,212,0.75)] mb-3 relative flex items-center justify-center gap-3 sm:gap-5 flex-wrap"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white drop-shadow-[0_0_45px_rgba(6,182,212,0.75)] -mt-4 mb-2 relative"
             >
-              <span>KESHAV</span>
-
-              {/* 3D CYBER AVATAR EMBEDDED IN THE MIDDLE OF HIS NAME */}
-              <div className="w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 relative inline-block shrink-0 mx-1 sm:mx-2 align-middle">
-                <Canvas camera={{ position: [0, 0.9, 3.8], fov: 45 }}>
-                  <ambientLight intensity={1.1} />
-                  <directionalLight position={[6, 12, 6]} intensity={2.2} color="#00f0ff" />
-                  <pointLight position={[-6, 6, -6]} intensity={1.5} color="#a855f7" />
-                  <pointLight position={[0, 0, 5]} intensity={isBoosted ? 3 : 1} color={isBoosted ? "#f43f5e" : "#38bdf8"} />
-                  <CyberHoloMan isBoosted={isBoosted} />
-                </Canvas>
-              </div>
-
+              KESHAV{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-purple-500">
                 AGRAWAL
               </span>
@@ -371,7 +398,7 @@ export default function Intro({ onLoadingComplete }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="font-mono text-xs md:text-sm text-cyan-300/90 tracking-[0.25em] md:tracking-[0.35em] uppercase mb-6"
+              className="font-mono text-xs md:text-sm text-cyan-300/90 tracking-[0.25em] md:tracking-[0.35em] uppercase mb-5"
             >
               FULL STACK DEVELOPER • AI/ML ARCHITECT
             </motion.p>
