@@ -157,8 +157,8 @@ export default function Scene() {
           <Skills />
         </div>
 
-        {/* Page 5-6: Projects */}
-        <div id="projects" className="w-screen min-h-[180vh] flex flex-col py-20 px-6 md:px-20">
+        {/* Page 5-8: Projects */}
+        <div id="projects" className="w-screen flex flex-col py-20 px-4 md:px-12">
           <Projects />
         </div>
 

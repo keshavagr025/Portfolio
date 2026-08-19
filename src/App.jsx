@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { ScrollControls, Loader } from '@react-three/drei';
 import { User, BriefcaseBusiness, Folder, Code2, Mail, Trophy } from 'lucide-react';
 import Scene from './components/Scene';
+import Intro from './components/Intro';
 
 const NAV_LINKS = [
   { label: 'About',        id: 'about',        Icon: User },
@@ -113,17 +114,18 @@ function Navbar() {
 
 function App() {
   const [pages, setPages] = useState(9.5);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       // Stacking of elements on mobile requires significantly more scroll height
       if (width < 768) {
-        setPages(14.5);
+        setPages(21);
       } else if (width < 1024) {
-        setPages(12);
+        setPages(16);
       } else {
-        setPages(9.5);
+        setPages(12.5);
       }
     };
 
@@ -134,7 +136,12 @@ function App() {
 
   return (
     <div className="w-screen h-screen bg-[#00040a] overflow-hidden text-white font-sans">
-      {/* Navbar rendered outside Canvas so it's always visible */}
+      {/* Full-screen Loading / Intro Page */}
+      {isLoading && (
+        <Intro onLoadingComplete={() => setIsLoading(false)} />
+      )}
+
+      {/* Main Portfolio (rendered once loaded) */}
       <Navbar />
 
       <Canvas shadows camera={{ position: [0, 0, 10], fov: 45 }}>
